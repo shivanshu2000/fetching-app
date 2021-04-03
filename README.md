@@ -7,4 +7,10 @@
 
 ![alt text](https://i.imgur.com/sBaaBOt.png)
 
+## Key Features
+
+- getInitialState()
+- useEffect()
+- useRouter()
+
 Link to the app [`Click here`](https://fetching-app.vercel.app)
