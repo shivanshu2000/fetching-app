@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@material-ui/core';
+import Head from 'next/head';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
@@ -93,7 +94,7 @@ export default function Home({ fetchedData }) {
       .join('&');
 
     const res = await fetch(
-      `https://api.spacexdata.com/v3/launches?limit=100&${filteredParams}`
+      `https://api.spacexdata.com/v3/launches?limit=30&${filteredParams}`
     );
 
     const route = filteredParams === '' ? '' : `?${filteredParams}`;
@@ -116,84 +117,55 @@ export default function Home({ fetchedData }) {
   const matchesMd = useMediaQuery(theme.breakpoints.up('md'));
   console.log(router);
   return (
-    <Grid container direction="column">
-      <Grid
-        direction="row"
-        item
-        container
-        justify="space-around"
-        alignItems="flex-start"
-        style={{ marginTop: '25px' }}
-      >
+    <>
+      <Head>
+        <title>Details</title>
+        <meta
+          name="description"
+          content="Get spacex data with some filter functionality(Love this app and get a chance to work with Elon Musk. I'll talk to him.)"
+        />
+      </Head>
+      <Grid container direction="column">
         <Grid
+          direction="row"
           item
           container
-          xs={10}
-          ex={4}
-          sm={2}
-          justify="space-between"
-          style={{ backgroundColor: '#fff', padding: '5px', height: 'auto' }}
+          justify="space-around"
+          alignItems="flex-start"
+          style={{ marginTop: '25px' }}
         >
-          <Grid item container direction="column" xs={12}>
-            <Grid item>
-              <Typography>
-                <b>Filters</b>
-              </Typography>
+          <Grid
+            item
+            container
+            xs={10}
+            ex={4}
+            sm={2}
+            justify="space-between"
+            style={{ backgroundColor: '#fff', padding: '5px', height: 'auto' }}
+          >
+            <Grid item container direction="column" xs={12}>
+              <Grid item>
+                <Typography>
+                  <b>Filters</b>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography align="center">Launch Year</Typography>
+              </Grid>
+              <Grid item>
+                <Divider />
+              </Grid>
             </Grid>
-            <Grid item>
-              <Typography align="center">Launch Year</Typography>
-            </Grid>
-            <Grid item>
-              <Divider />
-            </Grid>
-          </Grid>
 
-          {sdata.map((d, i) => (
-            <Grid
-              item
-              // sm={4}
-              xs={5}
-              className={classes.chips}
-              key={`${d.year}${i}`}
-              className={
-                router.query.launch_year === d.year
-                  ? `${classes.active} ${classes.chips}`
-                  : classes.chips
-              }
-            >
-              <Typography
-                align="center"
-                onClick={() => {
-                  seturlParams({ ...urlParams, launch_year: d.year });
-                }}
-                style={{
-                  cursor: 'pointer',
-                  padding: '5px',
-                  fontSize: '14px',
-                  fontWeight: 300,
-                  fontColor: '#eee',
-                }}
-              >
-                {d.year}
-              </Typography>
-            </Grid>
-          ))}
-
-          <Grid item container direction="column">
-            <Grid item>
-              <Typography align="center">Successful Launch</Typography>
-            </Grid>
-            <Grid item>
-              <Divider />
-            </Grid>
-            <Grid item container justify="space-between">
+            {sdata.map((d, i) => (
               <Grid
                 item
-                sm={4}
-                xs={4}
+                // sm={4}
+                xs={5}
                 className={classes.chips}
+                key={`${d.year}${i}`}
                 className={
-                  router.query.launch_success === 'true'
+                  router.query.launch_year === d.year
                     ? `${classes.active} ${classes.chips}`
                     : classes.chips
                 }
@@ -201,7 +173,7 @@ export default function Home({ fetchedData }) {
                 <Typography
                   align="center"
                   onClick={() => {
-                    seturlParams({ ...urlParams, launch_success: 'true' });
+                    seturlParams({ ...urlParams, launch_year: d.year });
                   }}
                   style={{
                     cursor: 'pointer',
@@ -211,168 +183,219 @@ export default function Home({ fetchedData }) {
                     fontColor: '#eee',
                   }}
                 >
-                  True{' '}
+                  {d.year}
                 </Typography>
               </Grid>
-              <Grid
-                item
-                sm={4}
-                xs={4}
-                className={classes.chips}
-                className={
-                  router.query.launch_success === 'false'
-                    ? `${classes.active} ${classes.chips}`
-                    : classes.chips
-                }
-              >
-                <Typography
-                  align="center"
-                  onClick={() => {
-                    seturlParams({ ...urlParams, launch_success: 'false' });
-                  }}
-                  style={{
-                    cursor: 'pointer',
-                    padding: '5px',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    fontColor: '#eee',
-                  }}
-                >
-                  False
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+            ))}
 
-          <Grid item container direction="column">
-            <Grid item>
-              <Typography align="center">Successful Landing</Typography>
-            </Grid>
-            <Grid item>
-              <Divider />
-            </Grid>
-            <Grid item container justify="space-between">
-              <Grid
-                item
-                sm={4}
-                xs={4}
-                className={classes.chips}
-                className={
-                  router.query.land_success === 'true'
-                    ? `${classes.active} ${classes.chips}`
-                    : classes.chips
-                }
-              >
-                <Typography
-                  align="center"
-                  onClick={() => {
-                    seturlParams({ ...urlParams, land_success: 'true' });
-                  }}
-                  style={{
-                    cursor: 'pointer',
-                    padding: '5px',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    fontColor: '#eee',
-                  }}
-                >
-                  True{' '}
-                </Typography>
+            <Grid item container direction="column">
+              <Grid item>
+                <Typography align="center">Successful Launch</Typography>
               </Grid>
-              <Grid
-                item
-                sm={4}
-                xs={4}
-                className={classes.chips}
-                className={
-                  router.query.land_success === 'false'
-                    ? `${classes.active} ${classes.chips}`
-                    : classes.chips
-                }
-              >
-                <Typography
-                  align="center"
-                  onClick={() =>
-                    seturlParams({ ...urlParams, land_success: 'false' })
+              <Grid item>
+                <Divider />
+              </Grid>
+              <Grid item container justify="space-between">
+                <Grid
+                  item
+                  sm={4}
+                  xs={4}
+                  className={classes.chips}
+                  className={
+                    router.query.launch_success === 'true'
+                      ? `${classes.active} ${classes.chips}`
+                      : classes.chips
                   }
-                  style={{
-                    cursor: 'pointer',
-                    padding: '5px',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    fontColor: '#eee',
-                  }}
                 >
-                  False
-                </Typography>
+                  <Typography
+                    align="center"
+                    onClick={() => {
+                      seturlParams({ ...urlParams, launch_success: 'true' });
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '5px',
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      fontColor: '#eee',
+                    }}
+                  >
+                    True{' '}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  sm={4}
+                  xs={4}
+                  className={classes.chips}
+                  className={
+                    router.query.launch_success === 'false'
+                      ? `${classes.active} ${classes.chips}`
+                      : classes.chips
+                  }
+                >
+                  <Typography
+                    align="center"
+                    onClick={() => {
+                      seturlParams({ ...urlParams, launch_success: 'false' });
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '5px',
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      fontColor: '#eee',
+                    }}
+                  >
+                    False
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item container direction="column">
+              <Grid item>
+                <Typography align="center">Successful Landing</Typography>
+              </Grid>
+              <Grid item>
+                <Divider />
+              </Grid>
+              <Grid item container justify="space-between">
+                <Grid
+                  item
+                  sm={4}
+                  xs={4}
+                  className={classes.chips}
+                  className={
+                    router.query.land_success === 'true'
+                      ? `${classes.active} ${classes.chips}`
+                      : classes.chips
+                  }
+                >
+                  <Typography
+                    align="center"
+                    onClick={() => {
+                      seturlParams({ ...urlParams, land_success: 'true' });
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '5px',
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      fontColor: '#eee',
+                    }}
+                  >
+                    True{' '}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  sm={4}
+                  xs={4}
+                  className={classes.chips}
+                  className={
+                    router.query.land_success === 'false'
+                      ? `${classes.active} ${classes.chips}`
+                      : classes.chips
+                  }
+                >
+                  <Typography
+                    align="center"
+                    onClick={() =>
+                      seturlParams({ ...urlParams, land_success: 'false' })
+                    }
+                    style={{
+                      cursor: 'pointer',
+                      padding: '5px',
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      fontColor: '#eee',
+                    }}
+                  >
+                    False
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <Grid
-          item
-          container
-          xs={11}
-          sm={9}
-          justify={matchesMd ? 'space-around' : 'center'}
-          style={{ backgroundColor: '#eee', width: '250px' }}
-        >
-          {adata?.map((d) => (
-            <Grid
-              item
-              container
-              // xs={3}
-              xs={9}
-              ex={6}
-              sm={5}
-              md={3}
-              direction="column"
-              className={classes.card}
-            >
+          <Grid
+            item
+            container
+            xs={11}
+            sm={9}
+            justify={matchesMd ? 'space-around' : 'center'}
+            style={{ backgroundColor: '#eee', width: '250px' }}
+          >
+            {adata?.map((d) => (
               <Grid
                 item
-                style={{
-                  marginTop: '10px',
-                  color: '#01184295',
-                  fontSize: '17px',
-                  marginBottom: '5px',
-                }}
+                container
+                // xs={3}
+                xs={9}
+                ex={6}
+                sm={5}
+                md={3}
+                direction="column"
+                className={classes.card}
               >
-                <b>{d.mission_name}</b>
+                <Grid item container>
+                  <Grid
+                    item
+                    component="img"
+                    src={d.links.mission_patch}
+                    width="100%"
+                    height="150px"
+                    style={{
+                      backgroundColor: '#eee',
+                      padding: '3px',
+                    }}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  style={{
+                    marginTop: '10px',
+                    color: '#01184295',
+                    fontSize: '17px',
+                    marginBottom: '5px',
+                  }}
+                >
+                  <b>{d.mission_name}</b>
+                </Grid>
+                <Grid item>
+                  <b>Mission Ids:</b>
+                  {d.mission_id.map((id) => (
+                    <li>{id}</li>
+                  ))}
+                </Grid>
+                <Grid item>
+                  <b>Launch Year:</b> {d.launch_year}
+                </Grid>
+                <Grid item>
+                  <b>Successful Launch:</b> {d.launch_success?.toString()}
+                </Grid>
+                <Grid item>
+                  <b>Successful Landing:</b> {d.launch_landing?.toString()}
+                </Grid>
               </Grid>
-              <Grid item>
-                <b>Mission Ids:</b>
-                {d.mission_id.map((id) => (
-                  <li>{id}</li>
-                ))}
-              </Grid>
-              <Grid item>
-                <b>Launch Year:</b> {d.launch_year}
-              </Grid>
-              <Grid item>
-                <b>Successful Launch:</b> {d.launch_success?.toString()}
-              </Grid>
-              <Grid item>
-                <b>Successful Landing:</b> {d.launch_landing?.toString()}
-              </Grid>
-            </Grid>
-          ))}
+            ))}
+          </Grid>
+        </Grid>
+        <Grid item container justify="center" style={{ marginTop: '25px' }}>
+          <Grid item style={{ fontSize: '15px' }}>
+            <b>Developed by: </b> Shivanshu Sharma
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item container justify="center" style={{ marginTop: '25px' }}>
-        <Grid item style={{ fontSize: '15px' }}>
-          <b>Developed by: </b> Shivanshu Sharma
-        </Grid>
-      </Grid>
-    </Grid>
+    </>
   );
 }
 
 Home.getInitialProps = async ({ query }) => {
   const string = Object.keys(query).map((key) => query[key]);
   console.log(query, string);
-  const res = await fetch('https://api.spacexdata.com/v3/launches?limit=100');
+  const res = await fetch('https://api.spacexdata.com/v3/launches?limit=20');
   const fetchedData = await res.json();
   return { fetchedData: fetchedData };
 };
