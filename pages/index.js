@@ -7,6 +7,8 @@ import {
   useTheme,
 } from '@material-ui/core';
 
+import Image from 'next/image';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -333,7 +335,8 @@ export default function Home({ fetchedData }) {
               <Grid item container>
                 <Grid
                   item
-                  component="img"
+                  component={Image}
+                  alt="Image"
                   src={d.links.mission_patch}
                   width="100%"
                   height="150px"
