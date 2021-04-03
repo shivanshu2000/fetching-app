@@ -82,7 +82,6 @@ export default function Home({ fetchedData }) {
 
   const fetchData = async (year, launch_success, land_success) => {
     const params = ['launch_year', 'launch_success', 'land_success'];
-    console.log(urlParams['launch_year'], urlParams);
     const filteredParams = params
       .filter((param) => {
         if (urlParams[param] !== '') {
@@ -97,7 +96,6 @@ export default function Home({ fetchedData }) {
       `https://api.spacexdata.com/v3/launches?limit=100&${filteredParams}`
     );
 
-    console.log(filteredParams);
     const route = filteredParams === '' ? '' : `?${filteredParams}`;
     router.push(route);
     const data = await res.json();
@@ -345,8 +343,16 @@ export default function Home({ fetchedData }) {
                   }}
                 />
               </Grid>
-              <Grid item style={{ marginTop: '10px' }}>
-                {d.mission_name}
+              <Grid
+                item
+                style={{
+                  marginTop: '10px',
+                  color: '#01184295',
+                  fontSize: '17px',
+                  marginBottom: '5px',
+                }}
+              >
+                <b>{d.mission_name}</b>
               </Grid>
               <Grid item>
                 <b>Mission Ids:</b>
