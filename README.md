@@ -7,7 +7,7 @@
 
 ![alt text](https://i.imgur.com/sBaaBOt.png)
 
-## Key Features
+## Key Properties Used
 
 - getInitialState()
 - useEffect()
