@@ -72,6 +72,7 @@ export default function Home({ fetchedData }) {
   const theme = useTheme();
 
   const router = useRouter();
+
   const [adata, setAData] = useState(fetchedData);
   const [urlParams, seturlParams] = useState({
     launch_year: router.query.launch_year ? router.query.launch_year : '',
@@ -104,6 +105,37 @@ export default function Home({ fetchedData }) {
   };
 
   useEffect(() => {
+    const rquery = router.query;
+    const keys = Object.keys(rquery);
+
+    const values = ['launch_year', 'launch_success', 'land_success'];
+
+    const newState = {};
+
+    keys.forEach((key) => {
+      newState[key] = rquery[key];
+    });
+
+    const newStatekeys = Object.keys(newState);
+
+    const otherKeys = values.filter((value) => {
+      if (!newStatekeys.includes(value)) {
+        return value;
+      }
+    });
+
+    otherKeys.forEach((key) => {
+      newState[key] = '';
+    });
+
+    console.log(newState);
+
+    seturlParams(newState);
+
+    console.log('ran');
+  }, [router.asPath]);
+
+  useEffect(() => {
     setAData([]);
     const launch_year = urlParams.launch_year;
     const launch_success = urlParams.launch_success;
@@ -115,7 +147,7 @@ export default function Home({ fetchedData }) {
   }, [urlParams]);
 
   const matchesMd = useMediaQuery(theme.breakpoints.up('md'));
-  console.log(router);
+
   return (
     <>
       <Head>
@@ -332,6 +364,7 @@ export default function Home({ fetchedData }) {
                 item
                 container
                 // xs={3}
+                key={`${d.mission_name}${d.launch_year}`}
                 xs={9}
                 ex={6}
                 sm={5}
@@ -366,7 +399,7 @@ export default function Home({ fetchedData }) {
                 <Grid item>
                   <b>Mission Ids:</b>
                   {d.mission_id.map((id) => (
-                    <li>{id}</li>
+                    <li key={d.mission_id}>{id}</li>
                   ))}
                 </Grid>
                 <Grid item>
