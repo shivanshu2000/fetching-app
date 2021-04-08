@@ -9,7 +9,7 @@
 
 ## Key Properties Used
 
-- getInitialState()
+- getInitialProps()
 - useEffect()
 - useRouter()
 
